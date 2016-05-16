@@ -40,9 +40,11 @@ app.get('/todos', function (req, res) {
     }
 
     if (query.hasOwnProperty('q') && query.q.length > 0) {
-        where.description = {
-            $like: '%' + query.q + '%'
-        };
+
+        // make Postgre on Heroku to use $iLike -> case insensitive
+        var key = (db.env === 'production') ? '$iLike' : '$like';
+        where.description = {};
+        where.description[key] = '%' + query.q + '%';
     }
 
     db.todo.findAll({ where: where }).then(function (todo) {
