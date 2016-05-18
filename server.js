@@ -115,7 +115,6 @@ app.put('/todos/:id', function (req, res) {
     var body = _.pick(req.body, 'description', 'completed');
     var attributes = {};
 
-
     if (body.hasOwnProperty('completed') )  {
         attributes.completed = body.completed;
     }
@@ -124,9 +123,31 @@ app.put('/todos/:id', function (req, res) {
         attributes.description = body.description;
     }
 
+    // db.todo.update(attributes, {where: {id: todoId}}).then(function (rowCount, row) {
+    // if (rowCount > 0) {
+    // res.status(204).send();
+    // } else {
+    // res.status(404).send();
+    // }
+    // });
+
+// Alternative solution
+    // db.todo.update(body, {
+    //     where: {
+    //         id: todoId
+    //     }
+    // }).then(function (todo) {
+    //     res.json(todo);
+    // }).catch(function (e) {
+    //     res.json(e);
+    // });
+
+// -- end Alternative solution
+
+
     db.todo.findById(todoId).then(function (todo) {
         if (todo) {
-            return todo.update(attributes).then(function (todo) {
+            todo.update(attributes).then(function (todo) {
                 res.json(todo);
             }, function (e) {
                 res.status(400).json(e);
@@ -136,6 +157,19 @@ app.put('/todos/:id', function (req, res) {
         }
     }, function () {
         res.status(500).send();
+    });
+
+});
+
+// POST /users
+app.post('/users', function (req, res) {
+    // use _.pick to only pick desired keys
+    var body = _.pick(req.body, 'email', 'password');
+
+    db.user.create(body).then(function (user) {
+        res.json(user);
+    }).catch(function (e) {
+        res.status(400).json(e);
     });
 });
 
