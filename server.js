@@ -155,7 +155,7 @@ app.put('/todos/:id', function (req, res) {
         } else {
             res.status(404).send();
         }
-    }, function () {
+    }, function () {    // if findById fails
         res.status(500).send();
     });
 
@@ -173,8 +173,9 @@ app.post('/users', function (req, res) {
     });
 });
 
-db.sequelize.sync().then(function () {
+db.sequelize.sync({ logging: console.log, force: true }).then(function () {
     app.listen(PORT, function() {
-        console.log('Server running on port ' + PORT);
+        console.log('Andrew Mead Server running on port ' + PORT);
+        console.log(db.user);
     });
 });

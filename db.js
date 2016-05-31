@@ -21,5 +21,10 @@ db.user = sequelize.import(__dirname + '/models/user.js');
 db.sequelize = sequelize;
 // db.Sequelize = Sequelize;
 
-
+// var a = Sequelize.hook;
+//
+// console.log(a.__CODE);
+//
+// console.log(Sequelize.hook);
+// console.log(db.todo);
 module.exports = db;
