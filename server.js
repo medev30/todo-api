@@ -167,15 +167,15 @@ app.post('/users', function (req, res) {
     var body = _.pick(req.body, 'email', 'password');
 
     db.user.create(body).then(function (user) {
-        res.json(user);
-    }).catch(function (e) {
+        res.json(user.toPublicJSON());
+    }, function (e) {
         res.status(400).json(e);
     });
 });
 
-db.sequelize.sync({ logging: console.log, force: true }).then(function () {
+
+db.sequelize.sync({ logging: console.log}).then(function () {
     app.listen(PORT, function() {
-        console.log('Andrew Mead Server running on port ' + PORT);
-        console.log(db.user);
+        console.log('Andrew Mead Node Server running on port ' + PORT);
     });
 });
